@@ -7,7 +7,7 @@ const projectSchema = new Schema({
         type: String,
         required: true,
     },
-    taskList: [taskSchema],
+    // taskList: [taskSchema],
 });
 
 module.exports = mongoose.model('Project', projectSchema);

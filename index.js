@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
 
-const config = require('./src/config/Config');
+const config = require('./src/config/config');
 const routes = require('./src/routes/Routes');
 const app = express();
 
