@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const User = require('../models/UserModel');
+const Session = require('../models/SessionModel');
 
 class UserRepository {
 
@@ -25,25 +27,22 @@ class UserRepository {
         return this.model.findOne(username);
     }
 
-    auth(username, password) {
-        this.findOne({ username })
-            .exec((err, user) => {
-                if (err) {
-                    return err;
-                } else if (!user) {
-                    const err = new Error('User not found.');
-                    err.status = 401;
-                    return err;
+    async auth(username, password) {
+        const user = await this.findOne({ username });
+        if (user) {
+            const compare = await bcrypt.compare(password, user.password);
+            if (compare) {
+                const oldSession = await Session.findOne({ userId: user._id });
+                if (oldSession) {
+                    Session.findByIdAndDelete(oldSession._id);
                 }
-
-                bcrypt.compare(password, user.password, (err, result) => {
-                    if (result) {
-                        return user;
-                    } else {
-                        return err;
-                    }
-                });
-            });
+                const newSessionKey = crypto.randomBytes(16).toString('base64');
+                const newSession = new Session({ key: newSessionKey, userId: user._id });
+                await newSession.save();
+                return newSessionKey;
+            }
+        }
+        return; // TODO return an error
     }
 }
 
