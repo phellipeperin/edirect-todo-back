@@ -1,4 +1,7 @@
 const ProjectRoutes = require('./ProjectRoutes');
 const TaskRoutes = require('./TaskRoutes');
 
-module.exports = ProjectRoutes;
+module.exports = [
+    ProjectRoutes,
+    TaskRoutes,
+];

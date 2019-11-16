@@ -1,6 +1,6 @@
 const Project = require('../models/Project');
 
-class ProjectRepository {
+class ProjectRepository { // TODO create a BaseRepository
 
     constructor(model) {
         this.model = model;

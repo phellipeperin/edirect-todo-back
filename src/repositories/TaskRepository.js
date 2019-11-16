@@ -13,14 +13,6 @@ class TaskRepository {
         return todo.save();
     }
 
-    findAll() {
-        return this.model.find();
-    }
-
-    findById(id) {
-        return this.model.findById(id);
-    }
-
     deleteById(id) {
         return this.model.findByIdAndDelete(id);
     }
