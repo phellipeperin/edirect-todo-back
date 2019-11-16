@@ -8,6 +8,8 @@ const cors = require('cors');
 
 const config = require('./src/config/config');
 const routes = require('./src/routes/Routes');
+const jwt = require('./src/util/jwt');
+const errorHandler = require('./src/util/errorHandler');
 const app = express();
 
 mongoose.set('useFindAndModify', false);
@@ -16,33 +18,19 @@ mongoose.connect(config.DB, {
     useUnifiedTopology: true,
 });
 
-app.use(cors());
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
+app.use(cors());
+app.use(jwt());
+app.use(errorHandler);
+// app.use(cookieParser());
 
 routes.forEach((route) => {
     app.use('/api', route);
 });
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-    next(createError(404));
-});
-
-// error handler
-app.use((err, req, res) => {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
-
-app.listen(config.APP_PORT); // Listen on port defined in environment
+app.listen(config.APP_PORT);
 
 module.exports = app;

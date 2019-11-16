@@ -7,10 +7,8 @@ class TaskRepository {
     }
 
     create(name) {
-        const newTask = { name, done: false };
-        const todo = new this.model(newTask);
-
-        return todo.save();
+        const item = new this.model({ name, done: false });
+        return item.save();
     }
 
     deleteById(id) {

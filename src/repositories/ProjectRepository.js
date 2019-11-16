@@ -7,10 +7,8 @@ class ProjectRepository { // TODO create a BaseRepository
     }
 
     create(name) {
-        const newTask = { name };
-        const todo = new this.model(newTask);
-
-        return todo.save();
+        const item = new this.model({ name });
+        return item.save();
     }
 
     findAll() {

@@ -8,9 +8,7 @@ router.post(`${baseUrl}/`, (req, res) => {
     // TODO encrypt
     userRepository
         .create(name)
-        .then((todo) => {
-            res.json(todo);
-        })
+        .then(result => res.json(result))
         .catch(error => console.log(error));
 });
 

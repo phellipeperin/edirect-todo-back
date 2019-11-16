@@ -7,9 +7,7 @@ const baseUrl = '/projects';
 router.get(`${baseUrl}/`, (req, res) => {
     projectRepository
         .findAll()
-        .then((todos) => {
-            res.json(todos);
-        })
+        .then(result => res.json(result))
         .catch(error => console.log(error));
 });
 
@@ -17,9 +15,7 @@ router.post(`${baseUrl}/`, (req, res) => {
     const { name } = req.body;
     projectRepository
         .create(name)
-        .then((todo) => {
-            res.json(todo);
-        })
+        .then(result => res.json(result))
         .catch(error => console.log(error));
 });
 
