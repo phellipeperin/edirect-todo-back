@@ -5,8 +5,8 @@ function jwt() {
     const secret = config.SECRET_KEY;
     return expressJwt({ secret }).unless({
         path: [
-            '/users',
-            '/login',
+            '/api/users',
+            '/api/login',
         ]
     });
 }

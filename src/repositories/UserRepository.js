@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/UserModel');
 
 class UserRepository {
 
@@ -14,7 +14,6 @@ class UserRepository {
     findById(id) {
         return this.model.findById(id);
     }
-
 }
 
 module.exports = new UserRepository(User);

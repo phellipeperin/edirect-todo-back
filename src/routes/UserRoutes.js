@@ -7,8 +7,8 @@ router.post(`${baseUrl}/`, (req, res) => {
     const { username, name, password } = req.body;
     // TODO encrypt
     userRepository
-        .create(name)
-        .then(result => res.json(result))
+        .create(username, name, password)
+        .then(result => res.json(result)) // todo return token
         .catch(error => console.log(error));
 });
 

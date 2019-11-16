@@ -1,4 +1,4 @@
-const Project = require('../models/Project');
+const Project = require('../models/ProjectModel');
 
 class ProjectRepository { // TODO create a BaseRepository
 

@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const taskSchema = new Schema({
+    // id: {
+    //     type: ObjectId,
+    // },
     name: {
         type: String,
         required: true,
@@ -12,4 +15,4 @@ const taskSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model('Task', taskSchema);
+module.exports = taskSchema;
