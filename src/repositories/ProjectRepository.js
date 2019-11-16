@@ -1,13 +1,13 @@
-const Task = require('../models/Task');
+const Project = require('../models/Project');
 
-class TaskRepository {
+class ProjectRepository {
 
     constructor(model) {
         this.model = model;
     }
 
     create(name) {
-        const newTask = { name, done: false };
+        const newTask = { name };
         const todo = new this.model(newTask);
 
         return todo.save();
@@ -27,8 +27,8 @@ class TaskRepository {
 
     updateById(id, object) {
         const query = { _id: id };
-        return this.model.findOneAndUpdate(query, { $set: { name: object.name, done: object.done } });
+        return this.model.findOneAndUpdate(query, { $set: { name: object.name } });
     }
 }
 
-module.exports = new TaskRepository(Task);
+module.exports = new ProjectRepository(Project);

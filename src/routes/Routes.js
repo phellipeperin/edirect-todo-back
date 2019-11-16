@@ -1,3 +1,4 @@
+const ProjectRoutes = require('./ProjectRoutes');
 const TaskRoutes = require('./TaskRoutes');
 
-module.exports = TaskRoutes;
+module.exports = ProjectRoutes;
