@@ -6,6 +6,7 @@ const projectSchema = new Schema({
     name: {
         type: String,
         required: true,
+        trim: true
     },
     taskList: [taskSchema],
 });

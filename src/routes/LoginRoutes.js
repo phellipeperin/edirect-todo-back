@@ -1,12 +1,11 @@
 const express = require('express');
 const userRepository = require('../repositories/UserRepository');
 const router = express.Router();
-const baseUrl = '/users';
 
-router.post(`${baseUrl}/`, (req, res) => {
-    const { username, name, password } = req.body;
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
     userRepository
-        .create(username, name, password)
+        .auth(username, password)
         .then(result => res.json(result)) // todo return token
         .catch(error => console.log(error));
 });

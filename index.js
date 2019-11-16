@@ -13,6 +13,7 @@ const errorHandler = require('./src/util/errorHandler');
 const app = express();
 
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(config.DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
