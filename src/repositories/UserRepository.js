@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-// const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 const Session = require('../models/SessionModel');
@@ -48,12 +47,10 @@ class UserRepository {
         if (user) {
             const compare = await bcrypt.compare(password, user.password);
             if (compare) {
-                console.log(user);
                 const oldSession = await Session.findOne({ userId: user._id });
                 if (oldSession) {
-                    Session.findByIdAndDelete(oldSession._id);
+                    await Session.findByIdAndDelete(oldSession._id);
                 }
-                // const newSessionKey = crypto.randomBytes(16).toString('base64');
                 const newSessionKey = jwt.sign({ _id: user._id }, config.SECRET_KEY);
                 const newSession = new Session({ key: newSessionKey, userId: user._id });
                 await newSession.save();
@@ -65,8 +62,8 @@ class UserRepository {
         });
     }
 
-    logout(sessionId) {
-        return Session.findByIdAndDelete(sessionId);
+    async logout(sessionKey) {
+        return Session.findOneAndDelete({ key: sessionKey });
     }
 }
 
