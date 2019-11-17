@@ -12,7 +12,7 @@ class ProjectRepository { // TODO create a BaseRepository
     }
 
     findAll(userId) { // TODO find por userID
-        return this.model.find();
+        return this.model.find({ userId });
     }
 
     findById(id) {
