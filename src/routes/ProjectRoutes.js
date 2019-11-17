@@ -38,7 +38,12 @@ router.delete(`${baseUrl}/:id`, auth, (req, res) => {
 });
 
 router.post(`${baseUrl}/:id/task`, auth, (req, res) => {
-    // todo create task
+    const { id } = req.params;
+    const { name } = req.body;
+    projectRepository
+        .addTask(id, name)
+        .then(result => res.json(result))
+        .catch(error => res.status(400).send(error));
 });
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const Project = require('../models/ProjectModel');
+const Task = require('../models/TaskModel');
 
 class ProjectRepository { // TODO create a BaseRepository
 
@@ -11,7 +12,7 @@ class ProjectRepository { // TODO create a BaseRepository
         return item.save();
     }
 
-    findAll(userId) { // TODO find por userID
+    findAll(userId) {
         return this.model.find({ userId });
     }
 
@@ -26,6 +27,15 @@ class ProjectRepository { // TODO create a BaseRepository
     updateById(id, object) {
         const query = { _id: id };
         return this.model.findOneAndUpdate(query, { $set: { name: object.name } });
+    }
+
+    async addTask(id, taskName) {
+        await this.model.update(
+            { _id: id },
+            { $push: { taskList: new Task({ name: taskName }) } },
+        );
+        const project = await this.model.findById(id);
+        return project.taskList[project.taskList.length - 1];
     }
 }
 
