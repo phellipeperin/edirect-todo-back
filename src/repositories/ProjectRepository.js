@@ -11,7 +11,7 @@ class ProjectRepository { // TODO create a BaseRepository
         return item.save();
     }
 
-    findAll() {
+    findAll(userId) { // TODO find por userID
         return this.model.find();
     }
 
