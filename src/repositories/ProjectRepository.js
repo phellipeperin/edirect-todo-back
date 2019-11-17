@@ -7,6 +7,7 @@ class ProjectRepository { // TODO create a BaseRepository
         this.model = model;
     }
 
+    // Project
     create(name, userId) {
         const item = new this.model({ name, userId });
         return item.save();
@@ -25,17 +26,30 @@ class ProjectRepository { // TODO create a BaseRepository
     }
 
     updateById(id, object) {
-        const query = { _id: id };
-        return this.model.findOneAndUpdate(query, { $set: { name: object.name } });
+        return this.model.findOneAndUpdate({ _id: id }, { $set: { name: object.name } });
     }
 
-    async addTask(id, taskName) {
+    // Task
+    async addTask(projectId, taskName) {
         await this.model.update(
-            { _id: id },
+            { _id: projectId },
             { $push: { taskList: new Task({ name: taskName }) } },
         );
-        const project = await this.model.findById(id);
+        const project = await this.model.findById(projectId);
         return project.taskList[project.taskList.length - 1];
+    }
+
+    deleteTaskById(projectId, taskId) {
+        return this.model.findByIdAndUpdate(projectId, { $pull: { taskList: { _id: taskId, done: false } } });
+    }
+
+    updateTaskName(projectId, taskId, taskName) {
+        return this.model.findOneAndUpdate({ _id: projectId, 'taskList._id': taskId }, { $set: {'taskList.$.name': taskName } });
+    }
+
+    updateTaskStatus(projectId, taskId, done) {
+        const doneAt = done ? new Date() : null;
+        return this.model.findOneAndUpdate({ _id: projectId, 'taskList._id': taskId }, { $set: {'taskList.$.done': done, 'taskList.$.doneAt': doneAt } });
     }
 }
 
