@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+// const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 const Session = require('../models/SessionModel');
+const config = require('../config/config.js');
 
 class UserRepository {
 
@@ -27,6 +29,16 @@ class UserRepository {
         return this.model.findOne(username);
     }
 
+    async findBySessionKey(key) {
+        const session = await Session.findOne({ key });
+        if (session) {
+            return this.findById(session.userId);
+        }
+        return new Promise((resolve, reject) => {
+            reject('Invalid session');
+        });
+    }
+
     async auth(username, password) {
         const user = await this.findOne({ username });
         if (user) {
@@ -36,13 +48,16 @@ class UserRepository {
                 if (oldSession) {
                     Session.findByIdAndDelete(oldSession._id);
                 }
-                const newSessionKey = crypto.randomBytes(16).toString('base64');
+                // const newSessionKey = crypto.randomBytes(16).toString('base64');
+                const newSessionKey = jwt.sign({ _id: user._id }, config.SECRET_KEY);
                 const newSession = new Session({ key: newSessionKey, userId: user._id });
                 await newSession.save();
                 return newSessionKey;
             }
         }
-        return; // TODO return an error
+        return new Promise((resolve, reject) => {
+            reject('Invalid credentials');
+        });
     }
 }
 

@@ -8,8 +8,6 @@ const cors = require('cors');
 
 const config = require('./src/config/config');
 const routes = require('./src/routes/Routes');
-const jwt = require('./src/util/jwt');
-const errorHandler = require('./src/util/errorHandler');
 const app = express();
 
 mongoose.set('useFindAndModify', false);
@@ -24,8 +22,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 app.use(cors());
-app.use(jwt());
-app.use(errorHandler);
 // app.use(cookieParser());
 
 routes.forEach((route) => {

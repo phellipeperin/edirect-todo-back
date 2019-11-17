@@ -7,7 +7,7 @@ router.post('/login', (req, res) => {
     userRepository
         .auth(username, password)
         .then(result => res.json(result)) // todo return token
-        .catch(error => console.log(error));
+        .catch(error => res.status(400).send(error));
 });
 
 module.exports = router;
