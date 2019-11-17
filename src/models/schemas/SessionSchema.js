@@ -9,7 +9,8 @@ const sessionSchema = new Schema({
         trim: true
     },
     userId: {
-        type: String, // TODO ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
 });

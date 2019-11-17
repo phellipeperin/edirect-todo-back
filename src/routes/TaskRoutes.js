@@ -17,11 +17,7 @@ router.delete(`${baseUrl}/:id`, auth, (req, res) => {
     const { id } = req.params;
     taskRepository
         .deleteById(id)
-        .then((ok) => {
-            console.log(ok);
-            console.log(`Deleted record with id: ${id}`);
-            res.status(200).json([]);
-        })
+        .then(ok => res.status(200).json([]))
         .catch(error => res.status(400).send(error));
 });
 

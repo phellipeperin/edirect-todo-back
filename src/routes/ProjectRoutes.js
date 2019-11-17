@@ -7,7 +7,7 @@ const baseUrl = '/projects';
 
 router.get(`${baseUrl}/`, auth, (req, res) => {
     projectRepository
-        .findAll()
+        .findAll(req.user._id)
         .then(result => res.json(result))
         .catch(error => res.status(400).send(error));
 });
@@ -15,7 +15,7 @@ router.get(`${baseUrl}/`, auth, (req, res) => {
 router.post(`${baseUrl}/`, auth, (req, res) => {
     const { name } = req.body;
     projectRepository
-        .create(name)
+        .create(name, req.user._id)
         .then(result => res.json(result))
         .catch(error => res.status(400).send(error));
 });
@@ -33,18 +33,12 @@ router.delete(`${baseUrl}/:id`, auth, (req, res) => {
     const { id } = req.params;
     projectRepository
         .deleteById(id)
-        .then((ok) => {
-            console.log(ok);
-            console.log(`Deleted record with id: ${id}`);
-            res.status(200).json([]);
-        })
+        .then(ok => res.status(200).json([]))
         .catch(error => res.status(400).send(error));
 });
 
-// router.post(`${baseUrk}/:id/task`), (req, res) => {
-//
-// });
-
-// todo create task
+router.post(`${baseUrl}/:id/task`, auth, (req, res) => {
+    // todo create task
+});
 
 module.exports = router;

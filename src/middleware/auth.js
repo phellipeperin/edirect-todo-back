@@ -9,7 +9,7 @@ const auth = async(req, res, next) => {
         const user = await UserRepository.findBySessionKey(token);
         if (!user) throw new Error();
 
-        req.user = { username: user.username, name: user.name };
+        req.user = { _id: user._id, username: user.username, name: user.name };
         req.token = token;
         next();
     } catch (error) {

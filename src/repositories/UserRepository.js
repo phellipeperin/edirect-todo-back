@@ -12,13 +12,17 @@ class UserRepository {
     }
 
     async create(username, name, password) {
-        const user = { username, name, password };
+        let user = { username, name, password };
         const hashedPassword = await bcrypt.hash(user.password, 10);
         user.password = hashedPassword;
 
         const item = new this.model(user);
-        item.save();
-        return this.auth(username, password);
+        user = await item.save();
+
+        const newSessionKey = jwt.sign({ _id: user._id }, config.SECRET_KEY);
+        const newSession = new Session({ key: newSessionKey, userId: user._id });
+        await newSession.save();
+        return newSessionKey;
     }
 
     findById(id) {
@@ -44,6 +48,7 @@ class UserRepository {
         if (user) {
             const compare = await bcrypt.compare(password, user.password);
             if (compare) {
+                console.log(user);
                 const oldSession = await Session.findOne({ userId: user._id });
                 if (oldSession) {
                     Session.findByIdAndDelete(oldSession._id);
@@ -58,6 +63,10 @@ class UserRepository {
         return new Promise((resolve, reject) => {
             reject('Invalid credentials');
         });
+    }
+
+    logout(sessionId) {
+        return Session.findByIdAndDelete(sessionId);
     }
 }
 

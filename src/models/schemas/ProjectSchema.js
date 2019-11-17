@@ -8,6 +8,11 @@ const projectSchema = new Schema({
         required: true,
         trim: true
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     taskList: [taskSchema],
 });
 

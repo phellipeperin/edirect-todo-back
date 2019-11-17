@@ -6,8 +6,8 @@ class ProjectRepository { // TODO create a BaseRepository
         this.model = model;
     }
 
-    create(name) {
-        const item = new this.model({ name });
+    create(name, userId) {
+        const item = new this.model({ name, userId });
         return item.save();
     }
 
